@@ -16,30 +16,50 @@ function App() {
     setemail(e.target.value)
     console.log(email);
   }
-  }
+
   const submitpassword = (e) => {
     setpassword(e.target.value)
     console.log(password);
   }
 
-  const handlesubmit = () => {
-    let post="localhost:3000/register"
+  const handlesubmit = async(e) => {
+    e.preventDefault();
+    try{
+
+      let re =await fetch('http://localhost:3000/register',{
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          email: email,
+          password: password
+        })
+      })
+      const data=await re.json();
+      console.log(data);
+    }catch(err){
+      console.log(err);
+    }
   }
-    return (
-      <>
-        <label>Email</label>
-        <input type="email" name="" id="" className="bg-white" placeholder="email" onChange={submitemail} />
+  return (
+    <>
+      <form action="" onSubmit={handlesubmit}>
 
-        <label>Password</label>
-        <input type="password" name="" id="" className="bg-white" placeholder="Password" onChange={submitpassword} />
+      <label>Email</label>
+      <input type="email" name="" id="" className="bg-white" placeholder="email" onChange={submitemail} />
 
-
-        {/* <input type="submit" value="" placeholder='Submit'/> */}
-        <button type='submit' onClick={submitemail}>Submit</button>
+      <label>Password</label>
+      <input type="password" name="" id="" className="bg-white" placeholder="Password" onChange={submitpassword} />
 
 
-      </>
-    )
-  }
+      {/* <input type="submit" value="" placeholder='Submit'/> */}
+      <button type='submit' >Submit</button>
+      </form>
 
-  export default App
+
+    </>
+  )
+}
+
+export default App
